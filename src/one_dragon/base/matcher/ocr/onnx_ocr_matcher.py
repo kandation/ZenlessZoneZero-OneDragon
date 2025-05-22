@@ -15,8 +15,8 @@ from one_dragon.utils.log_utils import log
 
 class OnnxOcrMatcher(OcrMatcher):
     """
-    使用onnx的ocr模型 速度更快
-    TODO 未测试使用 RGB图片是否有影响
+    ใช้โมเดล OCR ของ onnx ซึ่งเร็วกว่า
+    TODO ยังไม่ได้ทดสอบว่ามีผลกระทบกับการใช้รูปภาพ RGB หรือไม่
     """
 
     def __init__(self):
@@ -25,7 +25,7 @@ class OnnxOcrMatcher(OcrMatcher):
         self._loading: bool = False
 
     def init_model(self) -> bool:
-        log.info('正在加载OCR模型')
+        log.info('กำลังโหลดโมเดล OCR')
         while self._loading:
             time.sleep(1)
             return True
@@ -45,24 +45,24 @@ class OnnxOcrMatcher(OcrMatcher):
                     vis_font_path=os.path.join(models_dir, 'simfang.tt'),
                 )
                 self._loading = False
-                log.info('加载OCR模型完毕')
+                log.info('โหลดโมเดล OCR เสร็จสิ้น')
                 return True
             except Exception:
-                log.error('OCR模型加载出错', exc_info=True)
+                log.error('เกิดข้อผิดพลาดในการโหลดโมเดล OCR', exc_info=True)
                 self._loading = False
                 return False
 
-        log.info('加载OCR模型完毕')
+        log.info('โหลดโมเดล OCR เสร็จสิ้น')
         self._loading = False
         return True
 
     def run_ocr_single_line(self, image: MatLike, threshold: float = None, strict_one_line: bool = True) -> str:
         """
-        单行文本识别 手动合成一行 按匹配结果从左到右 从上到下
-        理论中文情况不会出现过长分行的 这里只是为了兼容英语的情况
-        :param image: 图片
-        :param threshold: 阈值
-        :param strict_one_line: True时认为当前只有单行文本 False时依赖程序合并成一行
+        การรู้จำข้อความบรรทัดเดียว โดยการรวมเป็นบรรทัดเดียวด้วยตนเอง ตามผลการจับคู่จากซ้ายไปขวา จากบนลงล่าง
+        ในทางทฤษฎีภาษาจีนจะไม่เกิดการแบ่งบรรทัดที่ยาวเกินไป ที่นี่เพียงเพื่อรองรับกรณีภาษาอังกฤษ
+        :param image: รูปภาพ
+        :param threshold: ค่าเกณฑ์
+        :param strict_one_line: True หากมีข้อความเพียงบรรทัดเดียว False หากโปรแกรมต้องรวมเป็นบรรทัดเดียว
         :return:
         """
         if strict_one_line:
@@ -75,17 +75,17 @@ class OnnxOcrMatcher(OcrMatcher):
     def run_ocr(self, image: MatLike, threshold: float = None,
                 merge_line_distance: float = -1) -> dict[str, MatchResultList]:
         """
-        对图片进行OCR 返回所有匹配结果
-        :param image: 图片
-        :param threshold: 匹配阈值
-        :param merge_line_distance: 多少行距内合并结果 -1为不合并 理论中文情况不会出现过长分行的 这里只是为了兼容英语的情况
+        ทำการ OCR บนรูปภาพ และคืนค่าผลลัพธ์การจับคู่ทั้งหมด
+        :param image: รูปภาพ
+        :param threshold: ค่าเกณฑ์การจับคู่
+        :param merge_line_distance: ระยะห่างระหว่างบรรทัดที่จะรวมผลลัพธ์ -1 คือไม่รวม ในทางทฤษฎีภาษาจีนจะไม่เกิดการแบ่งบรรทัดที่ยาวเกินไป ที่นี่เพียงเพื่อรองรับกรณีภาษาอังกฤษ
         :return: {key_word: []}
         """
         start_time = time.time()
         result_map: dict = {}
         scan_result_list: list = self._model.ocr(image, cls=False)
         if len(scan_result_list) == 0:
-            log.debug('OCR结果 %s 耗时 %.2f', result_map.keys(), time.time() - start_time)
+            log.debug('ผลลัพธ์ OCR %s ใช้เวลา %.2f', result_map.keys(), time.time() - start_time)
             return result_map
 
         scan_result = scan_result_list[0]
@@ -107,27 +107,27 @@ class OnnxOcrMatcher(OcrMatcher):
         if merge_line_distance != -1:
             result_map = ocr_utils.merge_ocr_result_to_multiple_line(result_map, join_space=True,
                                                                      merge_line_distance=merge_line_distance)
-        log.debug('OCR结果 %s 耗时 %.2f', result_map.keys(), time.time() - start_time)
+        log.debug('ผลลัพธ์ OCR %s ใช้เวลา %.2f', result_map.keys(), time.time() - start_time)
         return result_map
 
     def _run_ocr_without_det(self, image: MatLike, threshold: float = None) -> str:
         """
-        不使用检测模型分析图片内文字的分布
-        默认传入的图片仅有文字信息
-        :param image: 图片
-        :param threshold: 匹配阈值
-        :return: [[("text", "score"),]] 由于禁用了空格，可以直接取第一个元素
+        ไม่ใช้โมเดลตรวจจับเพื่อวิเคราะห์การกระจายตัวของข้อความในรูปภาพ
+        โดยค่าเริ่มต้น รูปภาพที่ป้อนเข้ามาจะมีเพียงข้อมูลข้อความเท่านั้น
+        :param image: รูปภาพ
+        :param threshold: ค่าเกณฑ์การจับคู่
+        :return: [[("text", "score"),]] เนื่องจากปิดใช้งานช่องว่าง จึงสามารถนำองค์ประกอบแรกมาใช้ได้โดยตรง
         """
         start_time = time.time()
         scan_result: list = self._model.ocr(image, det=False, cls=False)
-        img_result = scan_result[0]  # 取第一张图片
+        img_result = scan_result[0]  # นำรูปภาพแรก
         if len(img_result) > 1:
-            log.debug("禁检测的OCR模型返回多个识别结果")  # 目前没有出现这种情况
+            log.debug("โมเดล OCR ที่ปิดใช้งานการตรวจจับคืนค่าผลลัพธ์การรู้จำหลายรายการ")  # ปัจจุบันยังไม่เคยเกิดกรณีนี้
 
         if threshold is not None and scan_result[0][1] < threshold:
-            log.debug("OCR模型返回的识别结果置信度低于阈值")
+            log.debug("ความเชื่อมั่นของผลลัพธ์การรู้จำที่โมเดล OCR คืนค่าต่ำกว่าเกณฑ์")
             return ""
-        log.debug('OCR结果 %s 耗时 %.2f', scan_result, time.time() - start_time)
+        log.debug('ผลลัพธ์ OCR %s ใช้เวลา %.2f', scan_result, time.time() - start_time)
         return img_result[0][0]
 
     def match_words(self, image: MatLike, words: List[str], threshold: float = None,
@@ -135,14 +135,14 @@ class OnnxOcrMatcher(OcrMatcher):
                     ignore_case: bool = True, lcs_percent: float = -1, merge_line_distance: float = -1) -> dict[
         str, MatchResultList]:
         """
-        在图片中查找关键词 返回所有词对应的位置
-        :param image: 图片
-        :param words: 关键词
-        :param threshold: 匹配阈值
-        :param same_word: 要求整个词一样
-        :param ignore_case: 忽略大小写
-        :param lcs_percent: 最长公共子序列长度百分比 -1代表不使用 same_word=True时不生效
-        :param merge_line_distance: 多少行距内合并结果 -1为不合并
+        ค้นหาคำหลักในรูปภาพ และคืนค่าตำแหน่งที่สอดคล้องกับคำเหล่านั้นทั้งหมด
+        :param image: รูปภาพ
+        :param words: คำหลัก
+        :param threshold: ค่าเกณฑ์การจับคู่
+        :param same_word: ต้องการให้คำทั้งหมดเหมือนกัน
+        :param ignore_case: ไม่สนใจตัวพิมพ์เล็ก/ใหญ่
+        :param lcs_percent: เปอร์เซ็นต์ความยาวของลำดับย่อยร่วมที่ยาวที่สุด -1 หมายถึงไม่ใช้ ไม่ทำงานเมื่อ same_word=True
+        :param merge_line_distance: ระยะห่างระหว่างบรรทัดที่จะรวมผลลัพธ์ -1 คือไม่รวม
         :return: {key_word: []}
         """
         all_match_result: dict = self.run_ocr(image, threshold, merge_line_distance=merge_line_distance)
@@ -167,4 +167,3 @@ class OnnxOcrMatcher(OcrMatcher):
                             match_key.add(k)
 
         return {key: all_match_result[key] for key in match_key if key in all_match_result}
-

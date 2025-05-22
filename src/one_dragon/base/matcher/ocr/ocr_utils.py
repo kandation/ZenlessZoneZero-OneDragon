@@ -5,9 +5,9 @@ from one_dragon.base.matcher.match_result import MatchResult, MatchResultList
 
 def merge_ocr_result_to_single_line(ocr_map, join_space: bool = True) -> str:
     """
-    将OCR结果合并成一行 用于过长的文体产生换行
-    :param ocr_map: run_ocr的结果
-    :param join_space: 连接时是否加入空格
+    รวมผลลัพธ์ OCR เป็นบรรทัดเดียว ใช้สำหรับข้อความที่ยาวเกินไปและมีการขึ้นบรรทัดใหม่
+    :param ocr_map: ผลลัพธ์ของ run_ocr
+    :param join_space: ใส่ช่องว่างเมื่อเชื่อมต่อหรือไม่
     :return:
     """
     lines: List[List[MatchResult]] = []
@@ -41,10 +41,10 @@ def merge_ocr_result_to_single_line(ocr_map, join_space: bool = True) -> str:
 
 def merge_ocr_result_to_multiple_line(ocr_map, join_space: bool = True, merge_line_distance: float = 40) -> dict[str, MatchResultList]:
     """
-    将OCR结果合并成多行 用于过长的文体产生换行
-    :param ocr_map: run_ocr的结果
-    :param join_space: 连接时是否加入空格
-    :param merge_line_distance: 多少行距内合并结果
+    รวมผลลัพธ์ OCR เป็นหลายบรรทัด ใช้สำหรับข้อความที่ยาวเกินไปและมีการขึ้นบรรทัดใหม่
+    :param ocr_map: ผลลัพธ์ของ run_ocr
+    :param join_space: ใส่ช่องว่างเมื่อเชื่อมต่อหรือไม่
+    :param merge_line_distance: ระยะห่างระหว่างบรรทัดที่จะรวมผลลัพธ์
     :return:
     """
     lines = []

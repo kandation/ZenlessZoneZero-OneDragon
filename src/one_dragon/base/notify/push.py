@@ -1,4 +1,4 @@
-# 代码来自whyour/qinglong/develop/sample/notify.py, 感谢原作者的贡献
+# โค้ดมาจาก whyour/qinglong/develop/sample/notify.py ขอขอบคุณผู้เขียนต้นฉบับสำหรับการมีส่วนร่วม
 import base64
 import copy
 import hashlib
@@ -21,104 +21,104 @@ from one_dragon.utils.log_utils import log
 
 import requests
 
-class Push():
+class Push:
 
     _default_push_config = {
-        'BARK_PUSH': '',                    # bark IP 或设备码，例：https://api.day.app/DxHcxxxxxRxxxxxxcm/
-        'BARK_ARCHIVE': '',                 # bark 推送是否存档
-        'BARK_GROUP': '',                   # bark 推送分组
-        'BARK_SOUND': '',                   # bark 推送声音
-        'BARK_ICON': '',                    # bark 推送图标
-        'BARK_LEVEL': '',                   # bark 推送时效性
-        'BARK_URL': '',                     # bark 推送跳转URL
+        'BARK_PUSH': '',                    # Bark IP หรือรหัสอุปกรณ์, เช่น: https://api.day.app/DxHcxxxxxRxxxxxxcm/
+        'BARK_ARCHIVE': '',                 # Bark จะเก็บถาวรการแจ้งเตือนหรือไม่
+        'BARK_GROUP': '',                   # Bark กลุ่มการแจ้งเตือน
+        'BARK_SOUND': '',                   # Bark เสียงการแจ้งเตือน
+        'BARK_ICON': '',                    # Bark ไอคอนการแจ้งเตือน
+        'BARK_LEVEL': '',                   # Bark ความเร่งด่วนของการแจ้งเตือน
+        'BARK_URL': '',                     # Bark URL สำหรับการเปลี่ยนเส้นทาง
 
-        'CONSOLE': False,                   # 控制台输出
+        'CONSOLE': False,                   # แสดงผลในคอนโซล
 
-        'DD_BOT_SECRET': '',                # 钉钉机器人的 DD_BOT_SECRET
-        'DD_BOT_TOKEN': '',                 # 钉钉机器人的 DD_BOT_TOKEN
+        'DD_BOT_SECRET': '',                # DD_BOT_SECRET ของ DingTalk Bot
+        'DD_BOT_TOKEN': '',                 # DD_BOT_TOKEN ของ DingTalk Bot
 
-        'FS_KEY': '',                        # 飞书机器人的 KEY
+        'FS_KEY': '',                        # KEY ของ Feishu Bot
 
-        'ONEBOT_URL': '',                   # OneBot 的推送地址，以send_msg结尾
-        'ONEBOT_USER': '',                  # OneBot 的推送对象，QQ号
-        'ONEBOT_GROUP': '',                 # OneBot 的推送对象，群号
-        'ONEBOT_TOKEN': '',                 # OneBot 的 access_token，可选
+        'ONEBOT_URL': '',                   # ที่อยู่ Push ของ OneBot, ลงท้ายด้วย send_msg
+        'ONEBOT_USER': '',                  # ผู้รับ Push ของ OneBot, หมายเลข QQ
+        'ONEBOT_GROUP': '',                 # ผู้รับ Push ของ OneBot, หมายเลขกลุ่ม
+        'ONEBOT_TOKEN': '',                 # access_token ของ OneBot, ไม่บังคับ
 
-        'GOTIFY_URL': '',                   # gotify地址,如https://push.example.de:8080
-        'GOTIFY_TOKEN': '',                 # gotify的消息应用token
-        'GOTIFY_PRIORITY': 0,               # 推送消息优先级,默认为0
+        'GOTIFY_URL': '',                   # ที่อยู่ Gotify, เช่น https://push.example.de:8080
+        'GOTIFY_TOKEN': '',                 # token แอปพลิเคชันข้อความของ Gotify
+        'GOTIFY_PRIORITY': 0,               # ลำดับความสำคัญของข้อความ Push, ค่าเริ่มต้นคือ 0
 
-        'IGOT_PUSH_KEY': '',                # iGot 聚合推送的 IGOT_PUSH_KEY
+        'IGOT_PUSH_KEY': '',                # IGOT_PUSH_KEY ของ iGot Push
 
-        'SERVERCHAN_PUSH_KEY': '',          # server 酱的 PUSH_KEY，兼容旧版与 Turbo 版
+        'SERVERCHAN_PUSH_KEY': '',          # PUSH_KEY ของ Server Chan, รองรับทั้งเวอร์ชันเก่าและ Turbo
 
-        'DEER_KEY': '',                     # PushDeer 的 PUSHDEER_KEY
-        'DEER_URL': '',                     # PushDeer 的 PUSHDEER_URL
+        'DEER_KEY': '',                     # PUSHDEER_KEY ของ PushDeer
+        'DEER_URL': '',                     # PUSHDEER_URL ของ PushDeer
 
-        'CHAT_URL': '',                     # synology chat url
-        'CHAT_TOKEN': '',                   # synology chat token
+        'CHAT_URL': '',                     # Synology Chat URL
+        'CHAT_TOKEN': '',                   # Synology Chat Token
 
-        'PUSH_PLUS_TOKEN': '',              # pushplus 推送的用户令牌
-        'PUSH_PLUS_USER': '',               # pushplus 推送的群组编码
-        'PUSH_PLUS_TEMPLATE': 'html',       # pushplus 发送模板，支持html,txt,json,markdown,cloudMonitor,jenkins,route,pay
-        'PUSH_PLUS_CHANNEL': 'wechat',      # pushplus 发送渠道，支持wechat,webhook,cp,mail,sms
-        'PUSH_PLUS_WEBHOOK': '',            # pushplus webhook编码，可在pushplus公众号上扩展配置出更多渠道
-        'PUSH_PLUS_CALLBACKURL': '',        # pushplus 发送结果回调地址，会把推送最终结果通知到这个地址上
-        'PUSH_PLUS_TO': '',                 # pushplus 好友令牌，微信公众号渠道填写好友令牌，企业微信渠道填写企业微信用户id
+        'PUSH_PLUS_TOKEN': '',              # โทเค็นผู้ใช้ PushPlus
+        'PUSH_PLUS_USER': '',               # รหัสกลุ่ม PushPlus
+        'PUSH_PLUS_TEMPLATE': 'html',       # เทมเพลต PushPlus, รองรับ html,txt,json,markdown,cloudMonitor,jenkins,route,pay
+        'PUSH_PLUS_CHANNEL': 'wechat',      # ช่องทาง PushPlus, รองรับ wechat,webhook,cp,mail,sms
+        'PUSH_PLUS_WEBHOOK': '',            # รหัส webhook PushPlus, สามารถกำหนดค่าช่องทางเพิ่มเติมได้ในบัญชีสาธารณะ PushPlus
+        'PUSH_PLUS_CALLBACKURL': '',        # ที่อยู่เรียกกลับผลลัพธ์ PushPlus, จะแจ้งผลลัพธ์สุดท้ายไปยังที่อยู่นี้
+        'PUSH_PLUS_TO': '',                 # โทเค็นเพื่อน PushPlus, ช่องทาง WeChat Public Account กรอกโทเค็นเพื่อน, ช่องทาง Enterprise WeChat กรอกรหัสผู้ใช้ Enterprise WeChat
 
-        'WE_PLUS_BOT_TOKEN': '',            # 微加机器人的用户令牌
-        'WE_PLUS_BOT_RECEIVER': '',         # 微加机器人的消息接收者
-        'WE_PLUS_BOT_VERSION': 'pro',       # 微加机器人的调用版本
+        'WE_PLUS_BOT_TOKEN': '',            # โทเค็นผู้ใช้ WePlus Bot
+        'WE_PLUS_BOT_RECEIVER': '',         # ผู้รับข้อความ WePlus Bot
+        'WE_PLUS_BOT_VERSION': 'pro',       # เวอร์ชันการเรียกใช้ WePlus Bot
 
-        'QMSG_KEY': '',                     # qmsg 酱的 QMSG_KEY
-        'QMSG_TYPE': '',                    # qmsg 酱的 QMSG_TYPE
+        'QMSG_KEY': '',                     # QMSG_KEY ของ Qmsg
+        'QMSG_TYPE': '',                    # QMSG_TYPE ของ Qmsg
 
-        'QYWX_ORIGIN': '',                  # 企业微信代理地址
+        'QYWX_ORIGIN': '',                  # ที่อยู่พร็อกซี Enterprise WeChat
 
-        'QYWX_AM': '',                      # 企业微信应用
+        'QYWX_AM': '',                      # แอปพลิเคชัน Enterprise WeChat
 
-        'QYWX_KEY': '',                     # 企业微信机器人
+        'QYWX_KEY': '',                     # Enterprise WeChat Bot
 
-        'DISCORD_BOT_TOKEN': '',            # Discord 机器人的 Token
-        'DISCORD_USER_ID': '',              # Discord 接收消息的用户ID
+        'DISCORD_BOT_TOKEN': '',            # โทเค็น Discord Bot
+        'DISCORD_USER_ID': '',              # รหัสผู้ใช้ Discord ที่รับข้อความ
 
-        'TG_BOT_TOKEN': '',                 # tg 机器人的 TG_BOT_TOKEN，例：1407203283:AAG9rt-6RDaaX0HBLZQq0laNOh898iFYaRQ
-        'TG_USER_ID': '',                   # tg 机器人的 TG_USER_ID，例：1434078534
-        'TG_API_HOST': '',                  # tg 代理 api
-        'TG_PROXY_AUTH': '',                # tg 代理认证参数
-        'TG_PROXY_HOST': '',                # tg 机器人的 TG_PROXY_HOST
-        'TG_PROXY_PORT': '',                # tg 机器人的 TG_PROXY_PORT
+        'TG_BOT_TOKEN': '',                 # TG_BOT_TOKEN ของ Telegram Bot, เช่น: 1407203283:AAG9rt-6RDaaX0HBLZQq1laNOh898iFYaRQ
+        'TG_USER_ID': '',                   # TG_USER_ID ของ Telegram Bot, เช่น: 1434078534
+        'TG_API_HOST': '',                  # โฮสต์ API พร็อกซี Telegram
+        'TG_PROXY_AUTH': '',                # พารามิเตอร์การรับรองความถูกต้องของพร็อกซี Telegram
+        'TG_PROXY_HOST': '',                # TG_PROXY_HOST ของ Telegram Bot
+        'TG_PROXY_PORT': '',                # TG_PROXY_PORT ของ Telegram Bot
 
-        'AIBOTK_KEY': '',                   # 智能微秘书 个人中心的apikey 文档地址：http://wechat.aibotk.com/docs/about
-        'AIBOTK_TYPE': '',                  # 智能微秘书 发送目标 room 或 contact
-        'AIBOTK_NAME': '',                  # 智能微秘书  发送群名 或者好友昵称和type要对应好
+        'AIBOTK_KEY': '',                   # apikey ของ Aibotk จากศูนย์ส่วนตัว เอกสาร: http://wechat.aibotk.com/docs/about
+        'AIBOTK_TYPE': '',                  # ประเภทการส่งของ Aibotk: room หรือ contact
+        'AIBOTK_NAME': '',                  # ชื่อกลุ่มหรือชื่อเล่นเพื่อนของ Aibotk ต้องตรงกับ type
 
-        'SMTP_SERVER': '',                  # SMTP 发送邮件服务器，形如 smtp.exmail.qq.com:465
-        'SMTP_SSL': 'false',                # SMTP 发送邮件服务器是否使用 SSL，填写 true 或 false
-        'SMTP_EMAIL': '',                   # SMTP 收发件邮箱，通知将会由自己发给自己
-        'SMTP_PASSWORD': '',                # SMTP 登录密码，也可能为特殊口令，视具体邮件服务商说明而定
-        'SMTP_NAME': '',                    # SMTP 收发件人姓名，可随意填写
+        'SMTP_SERVER': '',                  # เซิร์ฟเวอร์ SMTP สำหรับส่งอีเมล, เช่น smtp.exmail.qq.com:465
+        'SMTP_SSL': 'false',                # SMTP ใช้ SSL หรือไม่, กรอก true หรือ false
+        'SMTP_EMAIL': '',                   # อีเมลผู้ส่ง/ผู้รับ SMTP, การแจ้งเตือนจะถูกส่งถึงตัวเอง
+        'SMTP_PASSWORD': '',                # รหัสผ่านเข้าสู่ระบบ SMTP, อาจเป็นรหัสพิเศษ ขึ้นอยู่กับผู้ให้บริการอีเมล
+        'SMTP_NAME': '',                    # ชื่อผู้ส่ง/ผู้รับ SMTP, สามารถกรอกอะไรก็ได้
 
-        'PUSHME_KEY': '',                   # PushMe 的 PUSHME_KEY
-        'PUSHME_URL': '',                   # PushMe 的 PUSHME_URL
+        'PUSHME_KEY': '',                   # PUSHME_KEY ของ PushMe
+        'PUSHME_URL': '',                   # PUSHME_URL ของ PushMe
 
-        'CHRONOCAT_QQ': '',                 # QQ 号
-        'CHRONOCAT_TOKEN': '',              # CHRONOCAT 的token
-        'CHRONOCAT_URL': '',                # CHRONOCAT的url地址
+        'CHRONOCAT_QQ': '',                 # หมายเลข QQ
+        'CHRONOCAT_TOKEN': '',              # โทเค็น CHRONOCAT
+        'CHRONOCAT_URL': '',                # ที่อยู่ URL ของ CHRONOCAT
 
-        'WEBHOOK_URL': '',                  # 自定义通知 请求地址
-        'WEBHOOK_BODY': '',                 # 自定义通知 请求体
-        'WEBHOOK_HEADERS': '',              # 自定义通知 请求头
-        'WEBHOOK_METHOD': '',               # 自定义通知 请求方法
-        'WEBHOOK_CONTENT_TYPE': '',         # 自定义通知 content-type
+        'WEBHOOK_URL': '',                  # ที่อยู่ URL ของการแจ้งเตือนแบบกำหนดเอง
+        'WEBHOOK_BODY': '',                 # เนื้อหาคำขอของการแจ้งเตือนแบบกำหนดเอง
+        'WEBHOOK_HEADERS': '',              # ส่วนหัวคำขอของการแจ้งเตือนแบบกำหนดเอง
+        'WEBHOOK_METHOD': '',               # วิธีการคำขอของการแจ้งเตือนแบบกำหนดเอง
+        'WEBHOOK_CONTENT_TYPE': '',         # Content-Type ของการแจ้งเตือนแบบกำหนดเอง
 
-        'NTFY_URL': '',                     # ntfy地址,如https://ntfy.sh
-        'NTFY_TOPIC': '',                   # ntfy的消息应用topic
-        'NTFY_PRIORITY':'3',                # 推送消息优先级,默认为3
+        'NTFY_URL': '',                     # ที่อยู่ Ntfy, เช่น https://ntfy.sh
+        'NTFY_TOPIC': '',                   # หัวข้อแอปพลิเคชันข้อความของ Ntfy
+        'NTFY_PRIORITY':'3',                # ลำดับความสำคัญของข้อความ Push, ค่าเริ่มต้นคือ 3
 
-        'WXPUSHER_APP_TOKEN': '',           # wxpusher 的 appToken 官方文档: https://wxpusher.zjiecode.com/docs/ 管理后台: https://wxpusher.zjiecode.com/admin/
-        'WXPUSHER_TOPIC_IDS': '',           # wxpusher 的 主题ID，多个用英文分号;分隔 topic_ids 与 uids 至少配置一个才行
-        'WXPUSHER_UIDS': '',                # wxpusher 的 用户ID，多个用英文分号;分隔 topic_ids 与 uids 至少配置一个才行
+        'WXPUSHER_APP_TOKEN': '',           # appToken ของ WxPusher เอกสารทางการ: https://wxpusher.zjiecode.com/docs/ แผงควบคุม: https://wxpusher.zjiecode.com/admin/
+        'WXPUSHER_TOPIC_IDS': '',           # ID หัวข้อของ WxPusher, หลายรายการคั่นด้วยเครื่องหมายอัฒภาค; topic_ids และ uids ต้องกำหนดค่าอย่างน้อยหนึ่งอย่าง
+        'WXPUSHER_UIDS': '',                # ID ผู้ใช้ของ WxPusher, หลายรายการคั่นด้วยเครื่องหมายอัฒภาค; topic_ids และ uids ต้องกำหนดค่าอย่างน้อยหนึ่งอย่าง
     }
 
 
@@ -129,10 +129,10 @@ class Push():
 
     def bark(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 Bark 推送消息。
+        ส่งข้อความโดยใช้ Bark
         """
 
-        log.info("Bark 服务启动")
+        log.info("เริ่มบริการ Bark")
 
         if self.push_config.get("BARK_PUSH").startswith("http"):
             url = f'{self.push_config.get("BARK_PUSH")}'
@@ -166,24 +166,24 @@ class Push():
         ).json()
 
         if response["code"] == 200:
-            log.info("Bark 推送成功！")
+            log.info("ส่ง Bark สำเร็จ!")
         else:
-            log.error("Bark 推送失败！")
+            log.error("ส่ง Bark ล้มเหลว!")
 
 
     def console(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 控制台 推送消息。
+        ส่งข้อความโดยใช้ Console
         """
         print(f"{title}\n{content}")
 
 
     def dingding_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 钉钉机器人 推送消息。
+        ส่งข้อความโดยใช้ DingTalk Bot
         """
 
-        log.info("钉钉机器人 服务启动")
+        log.info("เริ่มบริการ DingTalk Bot")
 
         timestamp = str(round(time.time() * 1000))
         secret_enc = self.push_config.get("DD_BOT_SECRET").encode("utf-8")
@@ -193,7 +193,7 @@ class Push():
             secret_enc, string_to_sign_enc, digestmod=hashlib.sha256
         ).digest()
         sign = urllib.parse.quote_plus(base64.b64encode(hmac_code))
-        url = f'https://oapi.dingtalk.com/robot/send?access_token={self.push_config.get("DD_BOT_TOKEN")}&timestamp={timestamp}&sign={sign}'
+        url = f'https://oapi.dingtalk.com/robot/send?access_token={self.push_config.get("DD_BOT_TOKEN")}×tamp={timestamp}&sign={sign}'
         headers = {"Content-Type": "application/json;charset=utf-8"}
         data = {"msgtype": "text", "text": {"content": f"{title}\n{content}"}}
         response = requests.post(
@@ -201,34 +201,34 @@ class Push():
         ).json()
 
         if not response["errcode"]:
-            log.info("钉钉机器人 推送成功！")
+            log.info("ส่ง DingTalk Bot สำเร็จ!")
         else:
-            log.error("钉钉机器人 推送失败！")
+            log.error("ส่ง DingTalk Bot ล้มเหลว!")
 
 
     def feishu_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 飞书机器人 推送消息。
+        ส่งข้อความโดยใช้ Feishu Bot
         """
 
-        log.info("飞书 服务启动")
+        log.info("เริ่มบริการ Feishu")
 
         url = f'https://open.feishu.cn/open-apis/bot/v2/hook/{self.push_config.get("FS_KEY")}'
         data = {"msg_type": "text", "content": {"text": f"{title}\n{content}"}}
         response = requests.post(url, data=json.dumps(data)).json()
 
         if response.get("StatusCode") == 0 or response.get("code") == 0:
-            log.info("飞书 推送成功！")
+            log.info("ส่ง Feishu สำเร็จ!")
         else:
-            log.error(f"飞书 推送失败！错误信息如下：\n{response}")
+            log.error(f"ส่ง Feishu ล้มเหลว! ข้อผิดพลาด:\n{response}")
 
 
     def one_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 OneBot 推送消息。
+        ส่งข้อความโดยใช้ OneBot
         """
 
-        log.info("OneBot 服务启动")
+        log.info("เริ่มบริการ OneBot")
 
         url = self.push_config.get("ONEBOT_URL").rstrip("/")
         user_id = self.push_config.get("ONEBOT_USER")
@@ -256,9 +256,9 @@ class Push():
             response_private = requests.post(url, data=json.dumps(data_private), headers=headers).json()
 
             if response_private["status"] == "ok":
-                log.info("OneBot 私聊推送成功！")
+                log.info("ส่ง OneBot Private Chat สำเร็จ!")
             else:
-                log.error("OneBot 私聊推送失败！")
+                log.error("ส่ง OneBot Private Chat ล้มเหลว!")
 
         if group_id != "":
             data_group["message_type"] = "group"
@@ -266,17 +266,17 @@ class Push():
             response_group = requests.post(url, data=json.dumps(data_group), headers=headers).json()
 
             if response_group["status"] == "ok":
-                log.info("OneBot 群聊推送成功！")
+                log.info("ส่ง OneBot Group Chat สำเร็จ!")
             else:
-                log.error("OneBot 群聊推送失败！")
+                log.error("ส่ง OneBot Group Chat ล้มเหลว!")
 
 
     def gotify(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 gotify 推送消息。
+        ส่งข้อความโดยใช้ Gotify
         """
 
-        log.info("gotify 服务启动")
+        log.info("เริ่มบริการ Gotify")
 
         url = f'{self.push_config.get("GOTIFY_URL")}/message?token={self.push_config.get("GOTIFY_TOKEN")}'
         data = {
@@ -287,17 +287,17 @@ class Push():
         response = requests.post(url, data=data).json()
 
         if response.get("id"):
-            log.info("gotify 推送成功！")
+            log.info("ส่ง Gotify สำเร็จ!")
         else:
-            log.error("gotify 推送失败！")
+            log.error("ส่ง Gotify ล้มเหลว!")
 
 
     def iGot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 iGot 推送消息。
+        ส่งข้อความโดยใช้ iGot
         """
 
-        log.info("iGot 服务启动")
+        log.info("เริ่มบริการ iGot")
 
         url = f'https://push.hellyw.com/{self.push_config.get("IGOT_PUSH_KEY")}'
         data = {"title": title, "content": content}
@@ -305,17 +305,17 @@ class Push():
         response = requests.post(url, data=data, headers=headers).json()
 
         if response["ret"] == 0:
-            log.info("iGot 推送成功！")
+            log.info("ส่ง iGot สำเร็จ!")
         else:
-            log.error(f'iGot 推送失败！{response["errMsg"]}')
+            log.error(f'ส่ง iGot ล้มเหลว! {response["errMsg"]}')
 
 
     def serverchan(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过 ServerChan 推送消息。
+        ส่งข้อความโดยใช้ ServerChan
         """
 
-        log.info("Server 酱 服务启动")
+        log.info("เริ่มบริการ Server Chan")
 
         data = {"text": title, "desp": content.replace("\n", "\n\n")}
 
@@ -329,17 +329,17 @@ class Push():
         response = requests.post(url, data=data).json()
 
         if response.get("errno") == 0 or response.get("code") == 0:
-            log.info("Server 酱 推送成功！")
+            log.info("ส่ง Server Chan สำเร็จ!")
         else:
-            log.error(f'Server 酱 推送失败！错误码：{response["message"]}')
+            log.error(f'ส่ง Server Chan ล้มเหลว! รหัสข้อผิดพลาด: {response["message"]}')
 
 
     def pushdeer(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过PushDeer 推送消息
+        ส่งข้อความโดยใช้ PushDeer
         """
 
-        log.info("PushDeer 服务启动")
+        log.info("เริ่มบริการ PushDeer")
         data = {
             "text": title,
             "desp": content,
@@ -353,33 +353,33 @@ class Push():
         response = requests.post(url, data=data).json()
 
         if len(response.get("content").get("result")) > 0:
-            log.info("PushDeer 推送成功！")
+            log.info("ส่ง PushDeer สำเร็จ!")
         else:
-            log.error(f"PushDeer 推送失败！错误信息：{response}")
+            log.error(f"ส่ง PushDeer ล้มเหลว! ข้อผิดพลาด: {response}")
 
 
     def chat(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过Chat 推送消息
+        ส่งข้อความโดยใช้ Chat
         """
 
-        log.info("chat 服务启动")
+        log.info("เริ่มบริการ Chat")
         data = "payload=" + json.dumps({"text": title + "\n" + content})
         url = self.push_config.get("CHAT_URL") + self.push_config.get("CHAT_TOKEN")
         response = requests.post(url, data=data)
 
         if response.status_code == 200:
-            log.info("Chat 推送成功！")
+            log.info("ส่ง Chat สำเร็จ!")
         else:
-            log.error(f"Chat 推送失败！错误信息：{response}")
+            log.error(f"ส่ง Chat ล้มเหลว! ข้อผิดพลาด: {response}")
 
 
     def pushplus_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过 pushplus 推送消息。
+        ส่งข้อความโดยใช้ PushPlus
         """
 
-        log.info("PUSHPLUS 服务启动")
+        log.info("เริ่มบริการ PUSHPLUS")
 
         url = "https://www.pushplus.plus/send"
         data = {
@@ -399,9 +399,9 @@ class Push():
 
         code = response["code"]
         if code == 200:
-            log.info("PUSHPLUS 推送请求成功，可根据流水号查询推送结果:" + response["data"])
+            log.info("ส่งคำขอ PUSHPLUS สำเร็จ, สามารถตรวจสอบผลลัพธ์การส่งได้ด้วยหมายเลขซีเรียล:" + response["data"])
             log.info(
-                "注意：请求成功并不代表推送成功，如未收到消息，请到pushplus官网使用流水号查询推送最终结果"
+                "ข้อควรระวัง: การส่งคำขอสำเร็จไม่ได้หมายความว่าส่งสำเร็จ หากไม่ได้รับข้อความ โปรดตรวจสอบผลลัพธ์สุดท้ายของการส่งบนเว็บไซต์ pushplus ด้วยหมายเลขซีเรียล"
             )
         elif code == 900 or code == 903 or code == 905 or code == 999:
             log.info(response["msg"])
@@ -412,18 +412,18 @@ class Push():
             response = requests.post(url=url_old, data=body, headers=headers).json()
 
             if response["code"] == 200:
-                log.info("PUSHPLUS(hxtrip) 推送成功！")
+                log.info("ส่ง PUSHPLUS(hxtrip) สำเร็จ!")
 
             else:
-                log.error("PUSHPLUS 推送失败！")
+                log.error("ส่ง PUSHPLUS ล้มเหลว!")
 
 
     def weplus_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过 微加机器人 推送消息。
+        ส่งข้อความโดยใช้ WePlus Bot
         """
 
-        log.info("微加机器人 服务启动")
+        log.info("เริ่มบริการ WePlus Bot")
 
         template = "txt"
         if len(content) > 800:
@@ -443,37 +443,37 @@ class Push():
         response = requests.post(url=url, data=body, headers=headers).json()
 
         if response["code"] == 200:
-            log.info("微加机器人 推送成功！")
+            log.info("ส่ง WePlus Bot สำเร็จ!")
         else:
-            log.error("微加机器人 推送失败！")
+            log.error("ส่ง WePlus Bot ล้มเหลว!")
 
 
     def qmsg_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 qmsg 推送消息。
+        ส่งข้อความโดยใช้ Qmsg
         """
 
-        log.info("qmsg 服务启动")
+        log.info("เริ่มบริการ Qmsg")
 
         url = f'https://qmsg.zendee.cn/{self.push_config.get("QMSG_TYPE")}/{self.push_config.get("QMSG_KEY")}'
         payload = {"msg": f'{title}\n{content.replace("----", "-")}'.encode("utf-8")}
         response = requests.post(url=url, params=payload).json()
 
         if response["code"] == 0:
-            log.info("qmsg 推送成功！")
+            log.info("ส่ง Qmsg สำเร็จ!")
         else:
-            log.error(f'qmsg 推送失败！{response["reason"]}')
+            log.error(f'ส่ง Qmsg ล้มเหลว! {response["reason"]}')
 
 
     def wecom_app(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过 企业微信 APP 推送消息。
+        ส่งข้อความโดยใช้ Enterprise WeChat APP
         """
         QYWX_AM_AY = re.split(",", self.push_config.get("QYWX_AM"))
         if 4 < len(QYWX_AM_AY) > 5:
-            log.info("QYWX_AM 设置错误!!")
+            log.info("การตั้งค่า QYWX_AM ผิดพลาด!!")
             return
-        log.info("企业微信 APP 服务启动")
+        log.info("เริ่มบริการ Enterprise WeChat APP")
 
         corpid = QYWX_AM_AY[0]
         corpsecret = QYWX_AM_AY[1]
@@ -488,7 +488,7 @@ class Push():
         else:
             origin = "https://qyapi.weixin.qq.com"
         wx = self.WeCom(corpid, corpsecret, agentid, origin)
-        # 如果没有配置 media_id 默认就以 text 方式发送
+        # หากไม่ได้กำหนดค่า media_id จะส่งเป็นข้อความธรรมดาโดยค่าเริ่มต้น
         if not media_id:
             message = title + "\n\n" + content
             response = wx.send_text(message, touser)
@@ -496,9 +496,9 @@ class Push():
             response = wx.send_mpnews(title, content, media_id, touser)
 
         if response == "ok":
-            log.info("企业微信推送成功！")
+            log.info("ส่ง Enterprise WeChat สำเร็จ!")
         else:
-            log.error(f"企业微信推送失败！错误信息如下：\n{response}")
+            log.error(f"ส่ง Enterprise WeChat ล้มเหลว! ข้อผิดพลาด:\n{response}")
 
 
     class WeCom:
@@ -563,10 +563,10 @@ class Push():
 
     def wecom_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过 企业微信机器人 推送消息。
+        ส่งข้อความโดยใช้ Enterprise WeChat Bot
         """
 
-        log.info("企业微信机器人服务启动")
+        log.info("เริ่มบริการ Enterprise WeChat Bot")
 
         origin = "https://qyapi.weixin.qq.com"
         if self.push_config.get("QYWX_ORIGIN"):
@@ -580,17 +580,17 @@ class Push():
         ).json()
 
         if response["errcode"] == 0:
-            log.info("企业微信机器人推送成功！")
+            log.info("ส่ง Enterprise WeChat Bot สำเร็จ!")
         else:
-            log.error("企业微信机器人推送失败！")
+            log.error("ส่ง Enterprise WeChat Bot ล้มเหลว!")
 
 
     def discord_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 Discord Bot 推送消息。
+        ส่งข้อความโดยใช้ Discord Bot
         """
 
-        log.info("Discord Bot 服务启动")
+        log.info("เริ่มบริการ Discord Bot")
 
         base_url = "https://discord.com/api/v9"
         headers = {
@@ -606,7 +606,7 @@ class Push():
         response.raise_for_status()
         channel_id = response.json().get("id")
         if not channel_id or channel_id == "":
-            log.error(f"Discord 私聊频道建立失败")
+            log.error(f"สร้างช่อง DM ของ Discord ล้มเหลว")
             return
 
         message_url = f"{base_url}/channels/{channel_id}/messages"
@@ -625,15 +625,15 @@ class Push():
 
         response = requests.post(message_url, headers=headers, data=data, files=files, timeout=30)
         response.raise_for_status()
-        log.info("Discord Bot 推送成功！")
+        log.info("ส่ง Discord Bot สำเร็จ!")
 
 
     def telegram_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 telegram 机器人 推送消息。
+        ส่งข้อความโดยใช้ Telegram Bot
         """
 
-        log.info("Telegram 服务启动")
+        log.info("เริ่มบริการ Telegram")
 
         if self.push_config.get("TG_API_HOST"):
             url = f"{self.push_config.get('TG_API_HOST')}/bot{self.push_config.get('TG_BOT_TOKEN')}/sendMessage"
@@ -666,17 +666,17 @@ class Push():
         ).json()
 
         if response["ok"]:
-            log.info("Telegram 推送成功！")
+            log.info("ส่ง Telegram สำเร็จ!")
         else:
-            log.error("Telegram 推送失败！")
+            log.error("ส่ง Telegram ล้มเหลว!")
 
 
     def aibotk(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 智能微秘书 推送消息。
+        ส่งข้อความโดยใช้ Aibotk
         """
 
-        log.info("智能微秘书 服务启动")
+        log.info("เริ่มบริการ Aibotk")
 
         if self.push_config.get("AIBOTK_TYPE") == "room":
             url = "https://api-bot.aibotk.com/openapi/v1/chat/room"
@@ -696,17 +696,17 @@ class Push():
         headers = {"Content-Type": "application/json"}
         response = requests.post(url=url, data=body, headers=headers).json()
         if response["code"] == 0:
-            log.info("智能微秘书 推送成功！")
+            log.info("ส่ง Aibotk สำเร็จ!")
         else:
-            log.error(f'智能微秘书 推送失败！{response["error"]}')
+            log.error(f'ส่ง Aibotk ล้มเหลว! {response["error"]}')
 
 
     def smtp(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 SMTP 邮件 推送消息。
+        ส่งข้อความโดยใช้ SMTP Email
         """
 
-        log.info("SMTP 邮件 服务启动")
+        log.info("เริ่มบริการ SMTP Email")
 
         message = MIMEText(content, "plain", "utf-8")
         message["From"] = formataddr(
@@ -738,17 +738,17 @@ class Push():
                 message.as_bytes(),
             )
             smtp_server.close()
-            log.info("SMTP 邮件 推送成功！")
+            log.info("ส่ง SMTP Email สำเร็จ!")
         except Exception as e:
-            log.error(f"SMTP 邮件 推送失败！{e}")
+            log.error(f"ส่ง SMTP Email ล้มเหลว! {e}")
 
 
     def pushme(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 PushMe 推送消息。
+        ส่งข้อความโดยใช้ PushMe
         """
 
-        log.info("PushMe 服务启动")
+        log.info("เริ่มบริการ PushMe")
 
         url = (
             self.push_config.get("PUSHME_URL")
@@ -765,17 +765,17 @@ class Push():
         response = requests.post(url, data=data)
 
         if response.status_code == 200 and response.text == "success":
-            log.info("PushMe 推送成功！")
+            log.info("ส่ง PushMe สำเร็จ!")
         else:
-            log.error(f"PushMe 推送失败！{response.status_code} {response.text}")
+            log.error(f"ส่ง PushMe ล้มเหลว! {response.status_code} {response.text}")
 
 
     def chronocat(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        使用 CHRONOCAT 推送消息。
+        ส่งข้อความโดยใช้ CHRONOCAT
         """
 
-        log.info("CHRONOCAT 服务启动")
+        log.info("เริ่มบริการ CHRONOCAT")
 
         user_ids = re.findall(r"user_id=(\d+)", self.push_config.get("CHRONOCAT_QQ"))
         group_ids = re.findall(r"group_id=(\d+)", self.push_config.get("CHRONOCAT_QQ"))
@@ -802,60 +802,60 @@ class Push():
                 response = requests.post(url, headers=headers, data=json.dumps(data))
                 if response.status_code == 200:
                     if chat_type == 1:
-                        log.info(f"QQ个人消息:{ids}推送成功！")
+                        log.info(f"ข้อความส่วนตัว QQ:{ids} ส่งสำเร็จ!")
                     else:
-                        log.info(f"QQ群消息:{ids}推送成功！")
+                        log.info(f"ข้อความกลุ่ม QQ:{ids} ส่งสำเร็จ!")
                 else:
                     if chat_type == 1:
-                        log.error(f"QQ个人消息:{ids}推送失败！")
+                        log.error(f"ข้อความส่วนตัว QQ:{ids} ส่งล้มเหลว!")
                     else:
-                        log.error(f"QQ群消息:{ids}推送失败！")
+                        log.error(f"ข้อความกลุ่ม QQ:{ids} ส่งล้มเหลว!")
 
 
     def ntfy(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过 Ntfy 推送消息
+        ส่งข้อความโดยใช้ Ntfy
         """
 
         def encode_rfc2047(text: str) -> str:
-            """将文本编码为符合 RFC 2047 标准的格式"""
+            """เข้ารหัสข้อความเป็นรูปแบบที่สอดคล้องกับ RFC 2047"""
             encoded_bytes = base64.b64encode(text.encode("utf-8"))
             encoded_str = encoded_bytes.decode("utf-8")
             return f"=?utf-8?B?{encoded_str}?="
 
-        log.info("ntfy 服务启动")
+        log.info("เริ่มบริการ Ntfy")
         priority = "3"
         if not self.push_config.get("NTFY_PRIORITY"):
-            log.info("ntfy 服务的NTFY_PRIORITY 未设置!!默认设置为3")
+            log.info("NTFY_PRIORITY ของบริการ Ntfy ไม่ได้ตั้งค่า!! ตั้งค่าเริ่มต้นเป็น 3")
         else:
             priority = self.push_config.get("NTFY_PRIORITY")
 
-        # 使用 RFC 2047 编码 title
+        # เข้ารหัส title โดยใช้ RFC 2047
         encoded_title = encode_rfc2047(title)
 
         data = content.encode(encoding="utf-8")
-        headers = {"Title": encoded_title, "Priority": priority}  # 使用编码后的 title
+        headers = {"Title": encoded_title, "Priority": priority}  # ใช้ title ที่เข้ารหัสแล้ว
 
         url = self.push_config.get("NTFY_URL") + "/" + self.push_config.get("NTFY_TOPIC")
         response = requests.post(url, data=data, headers=headers)
-        if response.status_code == 200:  # 使用 response.status_code 进行检查
-            log.info("Ntfy 推送成功！")
+        if response.status_code == 200:  # ใช้ response.status_code ในการตรวจสอบ
+            log.info("ส่ง Ntfy สำเร็จ!")
         else:
-            log.error(f"Ntfy 推送失败！错误信息：{response.text}")
+            log.error(f"ส่ง Ntfy ล้มเหลว! ข้อผิดพลาด: {response.text}")
 
 
     def wxpusher_bot(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过 wxpusher 推送消息。
-        支持的环境变量:
+        ส่งข้อความโดยใช้ WxPusher
+        ตัวแปรสภาพแวดล้อมที่รองรับ:
         - WXPUSHER_APP_TOKEN: appToken
-        - WXPUSHER_TOPIC_IDS: 主题ID, 多个用英文分号;分隔
-        - WXPUSHER_UIDS: 用户ID, 多个用英文分号;分隔
+        - WXPUSHER_TOPIC_IDS: ID หัวข้อ, หลายรายการคั่นด้วยเครื่องหมายอัฒภาค;
+        - WXPUSHER_UIDS: ID ผู้ใช้, หลายรายการคั่นด้วยเครื่องหมายอัฒภาค;
         """
 
         url = "https://wxpusher.zjiecode.com/api/send/message"
 
-        # 处理topic_ids和uids，将分号分隔的字符串转为数组
+        # ประมวลผล topic_ids และ uids, แปลงสตริงที่คั่นด้วยเครื่องหมายอัฒภาคเป็นอาร์เรย์
         topic_ids = []
         if self.push_config.get("WXPUSHER_TOPIC_IDS"):
             topic_ids = [
@@ -872,12 +872,12 @@ class Push():
                 if uid.strip()
             ]
 
-        # topic_ids uids 至少有一个
+        # topic_ids และ uids ต้องมีอย่างน้อยหนึ่งอย่าง
         if not topic_ids and not uids:
-            log.info("wxpusher 服务的 WXPUSHER_TOPIC_IDS 和 WXPUSHER_UIDS 至少设置一个!!")
+            log.info("WXPUSHER_TOPIC_IDS และ WXPUSHER_UIDS ของบริการ wxpusher ต้องตั้งค่าอย่างน้อยหนึ่งอย่าง!!")
             return
 
-        log.info("wxpusher 服务启动")
+        log.info("เริ่มบริการ wxpusher")
 
         data = {
             "appToken": self.push_config.get("WXPUSHER_APP_TOKEN"),
@@ -893,9 +893,9 @@ class Push():
         response = requests.post(url=url, json=data, headers=headers).json()
 
         if response.get("code") == 1000:
-            log.info("wxpusher 推送成功！")
+            log.info("ส่ง wxpusher สำเร็จ!")
         else:
-            log.error(f"wxpusher 推送失败！错误信息：{response.get('msg')}")
+            log.error(f"ส่ง wxpusher ล้มเหลว! ข้อผิดพลาด: {response.get('msg')}")
 
 
     def parse_headers(self, headers) -> dict:
@@ -951,10 +951,10 @@ class Push():
 
     def custom_notify(self, title: str, content: str, image: Optional[BytesIO]) -> None:
         """
-        通过 自定义通知 推送消息。
+        ส่งข้อความโดยใช้ Custom Notification
         """
 
-        log.info("自定义通知服务启动")
+        log.info("เริ่มบริการ Custom Notification")
 
         url = self.push_config.get("WEBHOOK_URL")
         method = self.push_config.get("WEBHOOK_METHOD")
@@ -963,7 +963,7 @@ class Push():
         headers = self.push_config.get("WEBHOOK_HEADERS")
 
         if "$title" not in url and "$title" not in body:
-            log.info("请求头或者请求体中必须包含 $title 和 $content")
+            log.info("ส่วนหัวหรือเนื้อหาคำขอต้องมี $title และ $content")
             return
 
         headers = self.parse_headers(headers)
@@ -982,9 +982,9 @@ class Push():
         )
 
         if response.status_code == 200:
-            log.info("自定义通知推送成功！")
+            log.info("ส่ง Custom Notification สำเร็จ!")
         else:
-            log.error(f"自定义通知推送失败！{response.status_code} {response.text}")
+            log.error(f"ส่ง Custom Notification ล้มเหลว! {response.status_code} {response.text}")
 
 
     def add_notify_function(self) -> list:
@@ -1054,7 +1054,7 @@ class Push():
         ):
             notify_function.append(self.wxpusher_bot)
         if not notify_function:
-            log.info(f"无推送渠道，请检查通知设置是否正确")
+            log.info(f"ไม่มีช่องทางการแจ้งเตือน โปรดตรวจสอบว่าการตั้งค่าการแจ้งเตือนถูกต้องหรือไม่")
         return notify_function
 
 

@@ -8,7 +8,7 @@ class MatchResult:
 
     def __init__(self, c, x, y, w, h, template_scale: float = 1, data: Any = None):
         """
-        识别结果 用于cv2和ocr
+        ผลลัพธ์การรู้จำ ใช้สำหรับ cv2 และ ocr
         """
         self.confidence: float = float(c)
         self.x: int = int(x)
@@ -45,7 +45,7 @@ class MatchResult:
 class MatchResultList:
     def __init__(self, only_best: bool = True):
         """
-        多个识别结果的组合 适用于一张图中有多个目标结果
+        การรวมผลลัพธ์การรู้จำหลายรายการ เหมาะสำหรับรูปภาพที่มีเป้าหมายหลายรายการ
         """
         self.only_best: bool = only_best
         self.arr: List[MatchResult] = []
@@ -71,10 +71,10 @@ class MatchResultList:
 
     def append(self, a: MatchResult, auto_merge: bool = True, merge_distance: float = 10):
         """
-        添加匹配结果，如果开启合并，则保留置信度更高的结果
-        :param a: 需要添加的结构
-        :param auto_merge: 是否与之前结果进行合并
-        :param merge_distance: 多少距离内的
+        เพิ่มผลลัพธ์การจับคู่ หากเปิดใช้งานการรวม จะเก็บผลลัพธ์ที่มีความเชื่อมั่นสูงกว่า
+        :param a: โครงสร้างที่ต้องการเพิ่ม
+        :param auto_merge: รวมกับผลลัพธ์ก่อนหน้าโดยอัตโนมัติหรือไม่
+        :param merge_distance: ระยะห่างที่จะรวม
         :return:
         """
         if self.only_best:
@@ -103,8 +103,8 @@ class MatchResultList:
 
     def add_offset(self, lt: Point) -> None:
         """
-        给所有结果增加一个左上角的偏移
-        用于截取区域后
+        เพิ่มการชดเชยที่มุมซ้ายบนให้กับผลลัพธ์ทั้งหมด
+        ใช้หลังจากตัดพื้นที่
         """
         for mr in self.arr:
             mr.add_offset(lt)

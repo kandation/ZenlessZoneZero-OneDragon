@@ -14,16 +14,16 @@ from one_dragon.utils.log_utils import log
 class PaddleOcrMatcher(OcrMatcher):
     """
     https://github.com/PaddlePaddle/PaddleOCR/blob/release/2.7/doc/doc_ch/quickstart.md
-    ocr.ocr(img) 返回的是一个list, for example:
+    ocr.ocr(img) คืนค่าเป็น list, ตัวอย่างเช่น:
     [
         [ [[894.0, 252.0], [1024.0, 252.0], [1024.0, 288.0], [894.0, 288.0]], ('快速恢复', 0.9989572763442993)],
         [ [[450.0, 494.0], [560.0, 494.0], [560.0, 530.0], [450.0, 530.0]], ('奇巧零食', 0.9995825290679932)]
     ]
-    返回锚框的坐标是[[x1,y1], [x2,y1], [x2,y2], [x1,y2]]
-    不能并发使用，会有线程安全问题
-    enable_mkldnn=True 后更慢了 原因未知
-    应该尽量避免传入还有不明黑点或横线之类的被识别为标点符号
-    使用识别祝福部分测试 传入黑白图并不能提速。颜色扣取不好还会导致识别精度下降。
+    พิกัดของ anchor box ที่คืนค่าคือ [[x1,y1], [x2,y1], [x2,y2], [x1,y2]]
+    ไม่สามารถใช้พร้อมกันได้ จะมีปัญหาเรื่อง thread safety
+    หลังจาก enable_mkldnn=True แล้วกลับช้าลง ไม่ทราบสาเหตุ
+    ควรหลีกเลี่ยงการส่งรูปภาพที่มีจุดดำหรือเส้นแนวนอนที่ไม่ชัดเจน ซึ่งอาจถูกระบุว่าเป็นเครื่องหมายวรรคตอน
+    ทดสอบการใช้ส่วนการรู้จำพร โดยการส่งรูปภาพขาวดำไม่ได้ช่วยให้เร็วขึ้น การดึงสีที่ไม่ดีอาจทำให้ความแม่นยำในการรู้จำลดลง
     """
 
     def __init__(self):
@@ -31,11 +31,11 @@ class PaddleOcrMatcher(OcrMatcher):
         self.ocr = None
 
     def init_model(self) -> bool:
-        log.info('正在加载OCR模型')
+        log.info('กำลังโหลดโมเดล OCR')
 
         if self.ocr is None:
             from paddleocr import PaddleOCR
-            logging.getLogger().handlers.clear()  # 不知道为什么 这里会引入这个logger 清除掉避免console中有重复日志
+            logging.getLogger().handlers.clear()  # ไม่ทราบว่าทำไมถึงมีการนำเข้า logger นี้เข้ามา ล้างออกเพื่อหลีกเลี่ยงการบันทึกซ้ำในคอนโซล
             models_dir = os_utils.get_path_under_work_dir('assets', 'models', 'ocr')
 
             try:
@@ -47,18 +47,18 @@ class PaddleOcrMatcher(OcrMatcher):
                 )
                 return True
             except Exception:
-                log.error('OCR模型加载出错', exc_info=True)
+                log.error('เกิดข้อผิดพลาดในการโหลดโมเดล OCR', exc_info=True)
                 return False
 
         return True
 
     def run_ocr_single_line(self, image: MatLike, threshold: float = None, strict_one_line: bool = True) -> str:
         """
-        单行文本识别 手动合成一行 按匹配结果从左到右 从上到下
-        理论中文情况不会出现过长分行的 这里只是为了兼容英语的情况
-        :param image: 图片
-        :param threshold: 阈值
-        :param strict_one_line: True时认为当前只有单行文本 False时依赖程序合并成一行
+        การรู้จำข้อความบรรทัดเดียว โดยการรวมเป็นบรรทัดเดียวด้วยตนเอง ตามผลการจับคู่จากซ้ายไปขวา จากบนลงล่าง
+        ในทางทฤษฎีภาษาจีนจะไม่เกิดการแบ่งบรรทัดที่ยาวเกินไป ที่นี่เพียงเพื่อรองรับกรณีภาษาอังกฤษ
+        :param image: รูปภาพ
+        :param threshold: ค่าเกณฑ์
+        :param strict_one_line: True หากมีข้อความเพียงบรรทัดเดียว False หากโปรแกรมต้องรวมเป็นบรรทัดเดียว
         :return:
         """
         if strict_one_line:
@@ -71,17 +71,17 @@ class PaddleOcrMatcher(OcrMatcher):
     def run_ocr(self, image: MatLike, threshold: float = None,
                 merge_line_distance: float = -1) -> dict[str, MatchResultList]:
         """
-        对图片进行OCR 返回所有匹配结果
-        :param image: 图片
-        :param threshold: 匹配阈值
-        :param merge_line_distance: 多少行距内合并结果 -1为不合并 理论中文情况不会出现过长分行的 这里只是为了兼容英语的情况
+        ทำการ OCR บนรูปภาพ และคืนค่าผลลัพธ์การจับคู่ทั้งหมด
+        :param image: รูปภาพ
+        :param threshold: ค่าเกณฑ์การจับคู่
+        :param merge_line_distance: ระยะห่างระหว่างบรรทัดที่จะรวมผลลัพธ์ -1 คือไม่รวม ในทางทฤษฎีภาษาจีนจะไม่เกิดการแบ่งบรรทัดที่ยาวเกินไป ที่นี่เพียงเพื่อรองรับกรณีภาษาอังกฤษ
         :return: {key_word: []}
         """
         start_time = time.time()
         result_map: dict = {}
         scan_result_list: list = self.ocr.ocr(image, cls=False)
         if len(scan_result_list) == 0:
-            log.debug('OCR结果 %s 耗时 %.2f', result_map.keys(), time.time() - start_time)
+            log.debug('ผลลัพธ์ OCR %s ใช้เวลา %.2f', result_map.keys(), time.time() - start_time)
             return result_map
 
         scan_result = scan_result_list[0]
@@ -103,25 +103,25 @@ class PaddleOcrMatcher(OcrMatcher):
         if merge_line_distance != -1:
             result_map = ocr_utils.merge_ocr_result_to_multiple_line(result_map, join_space=True,
                                                                      merge_line_distance=merge_line_distance)
-        log.debug('OCR结果 %s 耗时 %.2f', result_map.keys(), time.time() - start_time)
+        log.debug('ผลลัพธ์ OCR %s ใช้เวลา %.2f', result_map.keys(), time.time() - start_time)
         return result_map
 
     def _run_ocr_without_det(self, image: MatLike, threshold: float = None) -> str:
         """
-        不使用检测模型分析图片内文字的分布
-        默认传入的图片仅有文字信息
-        :param image: 图片
-        :param threshold: 匹配阈值
-        :return: [[("text", "score"),]] 由于禁用了空格，可以直接取第一个元素
+        ไม่ใช้โมเดลตรวจจับเพื่อวิเคราะห์การกระจายตัวของข้อความในรูปภาพ
+        โดยค่าเริ่มต้น รูปภาพที่ป้อนเข้ามาจะมีเพียงข้อมูลข้อความเท่านั้น
+        :param image: รูปภาพ
+        :param threshold: ค่าเกณฑ์การจับคู่
+        :return: [[("text", "score"),]] เนื่องจากปิดใช้งานช่องว่าง จึงสามารถนำองค์ประกอบแรกมาใช้ได้โดยตรง
         """
         start_time = time.time()
         scan_result: list = self.ocr.ocr(image, det=False, cls=False)
-        img_result = scan_result[0]  # 取第一张图片
+        img_result = scan_result[0]  # นำรูปภาพแรก
         if len(img_result) > 1:
-            log.debug("禁检测的OCR模型返回多个识别结果")  # 目前没有出现这种情况
+            log.debug("โมเดล OCR ที่ปิดใช้งานการตรวจจับคืนค่าผลลัพธ์การรู้จำหลายรายการ")  # ปัจจุบันยังไม่เคยเกิดกรณีนี้
 
         if threshold is not None and scan_result[0][1] < threshold:
-            log.debug("OCR模型返回的识别结果置信度低于阈值")
+            log.debug("ความเชื่อมั่นของผลลัพธ์การรู้จำที่โมเดล OCR คืนค่าต่ำกว่าเกณฑ์")
             return ""
-        log.debug('OCR结果 %s 耗时 %.2f', scan_result, time.time() - start_time)
+        log.debug('ผลลัพธ์ OCR %s ใช้เวลา %.2f', scan_result, time.time() - start_time)
         return img_result[0][0]
