@@ -1,15 +1,13 @@
-<!-- markdownlint-restore -->
 <div align="center">
 
 <img src="https://socialify.git.ci/DoctorReid/ZenlessZoneZero-OneDragon/image?description=1&font=Inter&language=1&logo=https%3A%2F%2Fgithub.com%2FDoctorReid%2FZenlessZoneZero-OneDragon%2Fblob%2Fmain%2F.github%2Fimage%2Fellen.png%3Fraw%3Dtrue&name=1&owner=1&pattern=Charlie+Brown&theme=Light" alt="ZenlessZoneZero-OneDragon"/>
 <div>
 
----
+-----
 
 </div>
 
-__ZenlessZoneZero-OneDragon__
-
+**ZenlessZoneZero-OneDragon**
 
 <div>
     <img alt="platform" src="https://img.shields.io/badge/platform-Windows-blueviolet">
@@ -21,84 +19,81 @@ __ZenlessZoneZero-OneDragon__
 </div>
 <br>
 
-学习实践 __图像识别 & 自动化__ 的智能解决方案
+โซลูชันอัจฉริยะสำหรับการเรียนรู้และฝึกฝน **การรู้จำภาพและการทำงานอัตโนมัติ**
 
-✨ 如果喜欢本项目，欢迎右上角点亮`Star`支持 ✨
+✨ หากคุณชื่นชอบโปรเจกต์นี้ โปรดกด `Star` ที่มุมขวาบนเพื่อเป็นกำลังใจให้ด้วยนะคะ ✨
 
 </div>
 
-## 🚀 功能介绍
+## 🚀 แนะนำฟังก์ชันการทำงาน
 
 <div align="left">
 
-🤖 __自动战斗__：支持自定义逻辑、技能标记、条件、变量等进阶用法  
-🛡️ __闪避助手__：基于声音、图像一体化模型识别，轻占用，高准确  
-🧹 __日常清理__：影像店、刮刮乐、咖啡店、材料、奖励等全日常清理  
-☕ __空洞作战__：基于大模型训练的识别、事件、寻路的功能模块  
-⏲️ __更多功能__： 定时启动、多账号切换、定时任务、自动对话……
+🤖 **การต่อสู้อัตโนมัติ**: รองรับการใช้งานขั้นสูง เช่น ตรรกะที่กำหนดเอง, การทำเครื่องหมายสกิล, เงื่อนไข, ตัวแปร ฯลฯ  
+🛡️ **ผู้ช่วยหลบหลีก**: พัฒนาจากการรู้จำโมเดลเสียงและภาพแบบผสมผสาน, ใช้ทรัพยากรน้อย, มีความแม่นยำสูง  
+🧹 **การจัดการประจำวัน**: จัดการกิจกรรมประจำวันทั้งหมด เช่น ร้านวิดีโอ, การ์ดขูด, ร้านกาแฟ, วัสดุ, รางวัล ฯลฯ  
+☕ **การปฏิบัติการในโฮล (Hollow Operation)**: โมดูลฟังก์ชันการรู้จำ, อีเวนต์, และการค้นหาเส้นทาง ที่พัฒนาจากการฝึกฝนโมเดลขนาดใหญ่ (Large Model)  
+⏲️ **ฟังก์ชันอื่นๆ**: เริ่มต้นตามกำหนดเวลา, สลับหลายบัญชี, งานที่กำหนดเวลา, การสนทนาอัตโนมัติ……
 
 </div>
 
-## 📸 页面预览
+## 📸 ภาพตัวอย่างหน้าจอ
 
 <div align="center">
 
-![App Interface](./image/app.png#gh-light-mode-only "操作界面")
-*✨ 简洁直观的操作界面 ✨*
+![App Interface](./image/app.png#gh-light-mode-only "หน้าจอการทำงาน")
+*✨ หน้าจอการทำงานที่เรียบง่ายและใช้งานง่าย ✨*
 
 </div>
 
-## 🛠️ 快速开始
+## 🛠️ เริ่มต้นใช้งานอย่างรวดเร็ว
 
-🔧 [新手入门指南](https://onedragon-anything.github.io/zzz/zh/quickstart.html)  
-✨ [一条龙官网](https://onedragon-anything.github.io/)
+🔧 [คู่มือเริ่มต้นสำหรับมือใหม่](https://onedragon-anything.github.io/zzz/en/quickstart.html)  
+✨ [เว็บไซต์ทางการของ OneDragon](https://onedragon-anything.github.io/)
 
-## ⚠️ 免责声明
+## ⚠️ ข้อจำกัดความรับผิดชอบ
 
-> 📌 本项目仅供学习交流，开发者团队保留最终解释权  
-> 🎨 项目LOGO版权归[巡夜子](https://github.com/yokuminto)及全体开发者所有  
-> ⚖️ 使用本工具产生的一切风险需自行承担  
-> 🚫 本项目未授权任何个人、商家、自媒体账号等进行售卖  
-> 🚫 若您遇到商家使用本软件进行代练并收费，产生的任何问题及后果与本软件无关  
-> 🚫 开发者团队不会为您提供任何"售后"服务
+> 📌 โปรเจกต์นี้มีไว้เพื่อการเรียนรู้และแลกเปลี่ยนความรู้เท่านั้น ทีมผู้พัฒนาขอสงวนสิทธิ์ในการตีความขั้นสุดท้าย  
+> 🎨 ลิขสิทธิ์โลโก้ของโปรเจกต์เป็นของ [巡夜子](https://github.com/yokuminto) และผู้พัฒนาทุกคน  
+> ⚖️ ความเสี่ยงทั้งหมดที่เกิดจากการใช้เครื่องมือนี้ ผู้ใช้จะต้องรับผิดชอบเอง  
+> 🚫 โปรเจกต์นี้ไม่อนุญาตให้บุคคล, ร้านค้า, หรือบัญชีสื่อตนเองใดๆ นำไปจำหน่าย  
+> 🚫 หากคุณพบร้านค้าที่ใช้ซอฟต์แวร์นี้ในการเล่นแทน (power-leveling/boosting) และเรียกเก็บเงิน ปัญหาและผลกระทบใดๆ ที่เกิดขึ้นจะไม่เกี่ยวข้องกับซอฟต์แวร์นี้  
+> 🚫 ทีมผู้พัฒนาจะไม่ให้บริการ "หลังการขาย" ใดๆ ทั้งสิ้น
 
-## 🌟 贡献者们
+## 🌟 ผู้มีส่วนร่วม
 
 <div>
 
-感谢参与项目的所有贡献者 ([完整名单](https://github.com/DoctorReid/ZenlessZoneZero-OneDragon/graphs/contributors))：
+ขอขอบคุณผู้มีส่วนร่วมทุกคนที่มีส่วนร่วมในโปรเจกต์นี้ ([รายชื่อทั้งหมด](https://github.com/DoctorReid/ZenlessZoneZero-OneDragon/graphs/contributors)):
 
 ![Contributors](https://contrib.rocks/image?repo=DoctorReid/ZenlessZoneZero-OneDragon&columns=12)
 
-是你们的参与共同构建了这个项目，让这个项目越来越好♡  
-如果想要参与开发，可以参考 [一条龙官网](https://onedragon-anything.github.io/) 对应的开发指南，我们期待你的加入
+การมีส่วนร่วมของพวกคุณได้ร่วมกันสร้างโปรเจกต์นี้ขึ้นมา และทำให้โปรเจกต์นี้ดียิ่งขึ้นไปอีก ♡  
+หากคุณต้องการมีส่วนร่วมในการพัฒนา สามารถดูคู่มือการพัฒนาที่เกี่ยวข้องได้ที่ [เว็บไซต์ทางการของ OneDragon](https://onedragon-anything.github.io/) เราหวังว่าจะได้ร่วมงานกับคุณ
 
 </div>
 
-## 📢 加入社区
+## 📢 เข้าร่วมชุมชน
 
 <div>
 
-🔗 **官方QQ群组**  
-👉 主群：`861603314`(请参阅下方内容)   
-👶 新手村：`925199190`
+🔗 **กลุ่ม QQ อย่างเป็นทางการ** 👉 กลุ่มหลัก：`861603314` (โปรดดูรายละเอียดด้านล่าง)  
+👶 กลุ่มสำหรับมือใหม่：`925199190`
 
-💬 [问题反馈](https://github.com/DoctorReid/ZenlessZoneZero-OneDragon/issues)
+💬 [แจ้งปัญหา/ข้อเสนอแนะ](https://github.com/DoctorReid/ZenlessZoneZero-OneDragon/issues)
 
-> 申请主群，需要点星星，并填入Github账号的ID作为入群申请 (右上角头像 -> Your Profile，网址上显示的ID)，请遵守群规，友善交流。
-
-
+> หากต้องการเข้าร่วมกลุ่มหลัก คุณจะต้องกด Star โปรเจกต์ และกรอก ID บัญชี Github ของคุณ (คลิกที่รูปโปรไฟล์มุมขวาบน -\> Your Profile, ID ที่แสดงบน URL) เพื่อใช้ในการขอเข้าร่วมกลุ่ม โปรดปฏิบัติตามกฎของกลุ่มและพูดคุยกันอย่างเป็นมิตร
 
 </div>
 
-## ☕ 支持我们
+## ☕ สนับสนุนพวกเรา
 
 <div align="center">
 
-如果本项目为您带来便利，欢迎支持服务器维护：
+หากโปรเจกต์นี้อำนวยความสะดวกให้แก่คุณ สามารถสนับสนุนค่าบำรุงรักษาเซิร์ฟเวอร์ได้ที่:
 
-<img src="./image/sponsor.png" width = "480" alt="图片名称" align=center />
+<img src="./image/sponsor.png" width = "480" alt="สนับสนุน" align=center />
 
-💖 查看[致谢名单](https://onedragon-anything.github.io/other/zh/like/thanks_2024.html)
+💖 ดู[รายชื่อผู้สนับสนุน](https://onedragon-anything.github.io/other/en/like/thanks_2024.html)
 
 </div>
